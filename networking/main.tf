@@ -1,5 +1,7 @@
 # --- networking/main.tf ---
 
+data "aws_availability_zones" "available" {}
+
 resource "random_integer" "random" {
     min = 1
     max = 100
@@ -20,7 +22,7 @@ resource "aws_subnet" "mtc_public_subnet" {
     vpc_id = aws_vpc.mtc_vpc.id
     cidr_block = var.public_cidrs[count.index]
     map_public_ip_on_launch = true
-    availability_zone = ["ap-southeast-2a", "ap-southeast-2b", "ap-southeast-2c"][count.index]
+    availability_zone = data.aws_availability_zones.available.names[count.index]
     
     tags = {
         Name = "mtc_public_${count.index + 1}"
@@ -32,7 +34,7 @@ resource "aws_subnet" "mtc_private_subnet" {
     vpc_id = aws_vpc.mtc_vpc.id
     cidr_block = var.private_cidrs[count.index]
     map_public_ip_on_launch = false
-    availability_zone = ["ap-southeast-2a", "ap-southeast-2b", "ap-southeast-2c"][count.index]
+    availability_zone = data.aws_availability_zones.available.names[count.index]
     
     tags = {
         Name = "mtc_private_${count.index + 1}"
