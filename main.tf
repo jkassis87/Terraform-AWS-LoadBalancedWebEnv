@@ -51,4 +51,6 @@ module "compute" {
   instance_count = 1
   instance_type  = "t3.micro"
   vol_size       = 10
+  key_name = "mtckey"
+  public_key_path = "/home/ec2-user/.ssh/keymct.pub"
 }
