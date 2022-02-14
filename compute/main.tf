@@ -15,13 +15,13 @@ resource "random_id" "mtc_node_id" {
   byte_length = 2
   count       = var.instance_count
   keepers = {
-      key_name = var.key_name
+    key_name = var.key_name
   }
 }
 
 resource "aws_key_pair" "mtc_auth" {
-    key_name = var.key_name
-    public_key = file(var.public_key_path)
+  key_name   = var.key_name
+  public_key = file(var.public_key_path)
 }
 
 resource "aws_instance" "mtc_node" {
@@ -31,16 +31,16 @@ resource "aws_instance" "mtc_node" {
   tags = {
     Name = "mtc_node-${random_id.mtc_node_id[count.index].dec}"
   }
-  key_name = var.key_name
+  key_name               = var.key_name
   vpc_security_group_ids = [var.public_sg]
   subnet_id              = var.public_subnets[count.index]
-  user_data = templatefile (var.user_data_path,
+  user_data = templatefile(var.user_data_path,
     {
-      nodename = "mtc_node-${random_id.mtc_node_id[count.index].dec}"
+      nodename    = "mtc-node-${random_id.mtc_node_id[count.index].dec}"
       db_endpoint = var.db_endpoint
-      dbuser = var.dbuser
-      dbpass = var.dbpass
-      dbname = var.dbname
+      dbuser      = var.dbuser
+      dbpass      = var.dbpass
+      dbname      = var.dbname
     }
   )
   root_block_device {

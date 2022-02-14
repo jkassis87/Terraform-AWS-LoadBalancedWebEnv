@@ -45,13 +45,17 @@ module "loadbalancing" {
 }
 
 module "compute" {
-  source         = "./compute"
-  public_sg = module.networking.public_sg
-  public_subnets = module.networking.public_subnets
-  instance_count = 1
-  instance_type  = "t3.micro"
-  vol_size       = 10
-  key_name = "mtckey"
+  source          = "./compute"
+  public_sg       = module.networking.public_sg
+  public_subnets  = module.networking.public_subnets
+  instance_count  = 1
+  instance_type   = "t3.micro"
+  vol_size        = 10
+  key_name        = "mtckey"
   public_key_path = "/home/ec2-user/.ssh/keymct.pub"
-  user_data_path = "${path.root}/userdata.pl"
+  user_data_path  = "${path.root}/userdata.tpl"
+  dbname          = var.dbname
+  dbuser          = var.dbuser
+  dbpass          = var.dbpassword
+  db_endpoint     = module.database.db_endpoint
 }
