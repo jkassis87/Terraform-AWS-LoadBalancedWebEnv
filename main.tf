@@ -59,5 +59,5 @@ module "compute" {
   dbpass              = var.dbpassword
   db_endpoint         = module.database.db_endpoint
   lb_target_group_arn = module.loadbalancing.lb_target_group_arn
-  tg_port = 8000
+  tg_port             = 8000
 }

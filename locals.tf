@@ -9,9 +9,9 @@ locals {
       description = "Security Group for Public Access"
       ingress = {
         ssh = {
-          from        = 22
-          to          = 22
-          protocol    = "tcp"
+          from        = 0
+          to          = 0
+          protocol    = -1
           cidr_blocks = [var.access_ip]
         }
         http = {
